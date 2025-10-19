@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - JobMatch</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        .btn {
+            padding: 10px 20px;
+            background: #dc3545;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+        }
+        .btn:hover {
+            background: #c82333;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <h1>Dashboard</h1>
+    <form method="post" action="/logout">
+        <button type="submit" class="btn">Logout</button>
+    </form>
+</div>
+
+<p>Welcome, <span sec:authentication="name">User</span>!</p>
+<p>You are logged in as: <span sec:authentication="principal.authorities">ROLE</span></p>
+
+<h3>Your JobMatch dashboard is ready!</h3>
+<p>Next steps: Add job posting and browsing features.</p>
+</body>
+</html>
