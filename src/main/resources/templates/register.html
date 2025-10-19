@@ -9,7 +9,7 @@
         max-width: 400px;
         margin: 50px auto;
     }
-    input {
+    input, select {
         width: 100%;
         padding: 10px;
         margin: 10px 0;
@@ -31,6 +31,13 @@
         color: red;
         margin: 10px 0;
     }
+    .radio-group {
+        margin: 15px 0;
+    }
+    .radio-group label {
+        display: inline-block;
+        margin-right: 20px;
+    }
   </style>
 </head>
 <body>
@@ -42,6 +49,19 @@
   <input type="text" name="name" placeholder="Full Name" required>
   <input type="email" name="email" placeholder="Email" required>
   <input type="password" name="password" placeholder="Password" required>
+
+  <div class="radio-group">
+    <label>I am a:</label><br>
+    <label>
+      <input type="radio" name="userType" value="student" checked required>
+      Student (Looking for jobs)
+    </label>
+    <label>
+      <input type="radio" name="userType" value="company" required>
+      Company (Posting jobs)
+    </label>
+  </div>
+
   <button type="submit">Register</button>
 </form>
 

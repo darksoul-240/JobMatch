@@ -33,15 +33,25 @@
 <body>
 <div class="header">
     <h1>Dashboard</h1>
-    <form method="post" action="/logout">
+    <form method="post" th:action="@{/logout}">
         <button type="submit" class="btn">Logout</button>
     </form>
 </div>
 
-<p>Welcome, <span sec:authentication="name">User</span>!</p>
-<p>You are logged in as: <span sec:authentication="principal.authorities">ROLE</span></p>
+<p>Welcome, <strong th:text="${user.name}">User</strong>!</p>
 
-<h3>Your JobMatch dashboard is ready!</h3>
-<p>Next steps: Add job posting and browsing features.</p>
+<div sec:authorize="hasRole('COMPANY')">
+    <h3>Company Dashboard</h3>
+    <p>You are logged in as a <strong>Company</strong></p>
+    <p>Here you can post jobs and manage applications.</p>
+</div>
+
+<div sec:authorize="hasRole('STUDENT')">
+    <h3>Student Dashboard</h3>
+    <p>You are logged in as a <strong>Student</strong></p>
+    <p>Here you can browse and apply for jobs.</p>
+</div>
+
+<p><em>Next steps: Add job posting and browsing features.</em></p>
 </body>
 </html>

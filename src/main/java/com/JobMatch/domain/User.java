@@ -73,4 +73,12 @@ public class User {
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
+
+    public boolean isCompany() {
+        return "ROLE_COMPANY".equals(this.role);
+    }
+
+    public boolean isStudent() {
+        return "ROLE_STUDENT".equals(this.role);
+    }
 }

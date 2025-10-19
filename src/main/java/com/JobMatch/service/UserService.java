@@ -15,6 +15,25 @@ public class UserService {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
+    public User registerCompany(String name, String email, String rawPassword) {
+        if (userRepository.findByEmail(email).isPresent()) {
+            throw new IllegalArgumentException("Email already used");
+        }
+
+
+        User user = new User();
+        user.setName(name);
+        user.setEmail(email);
+        user.setPassword(passwordEncoder.encode(rawPassword));
+        user.setRole("ROLE_COMPANY");  // Notice: ROLE_COMPANY instead of ROLE_STUDENT
+
+        return userRepository.save(user);
+    }
+
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+    }
 
     public User registerStudent(String name, String email, String rawPassword) {
         if (userRepository.findByEmail(email).isPresent()) {
