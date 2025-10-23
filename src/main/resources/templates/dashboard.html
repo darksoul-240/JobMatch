@@ -43,13 +43,28 @@
 <div sec:authorize="hasRole('COMPANY')">
     <h3>Company Dashboard</h3>
     <p>You are logged in as a <strong>Company</strong></p>
-    <p>Here you can post jobs and manage applications.</p>
+    <p>Manage your job postings and find talented students.</p>
+
+    <div style="margin-top: 20px;">
+        <a href="/jobs/post" style="display: inline-block; padding: 10px 20px; background: #28a745; color: white; text-decoration: none; border-radius: 5px; margin-right: 10px;">
+            + Post a Job
+        </a>
+        <a href="/jobs/my-jobs" style="display: inline-block; padding: 10px 20px; background: #007bff; color: white; text-decoration: none; border-radius: 5px;">
+            View My Jobs
+        </a>
+    </div>
 </div>
 
 <div sec:authorize="hasRole('STUDENT')">
     <h3>Student Dashboard</h3>
     <p>You are logged in as a <strong>Student</strong></p>
-    <p>Here you can browse and apply for jobs.</p>
+    <p>Find jobs that match your skills and location.</p>
+
+    <div style="margin-top: 20px;">
+        <a href="/jobs/browse" style="display: inline-block; padding: 10px 20px; background: #007bff; color: white; text-decoration: none; border-radius: 5px;">
+            Browse Jobs
+        </a>
+    </div>
 </div>
 
 <p><em>Next steps: Add job posting and browsing features.</em></p>

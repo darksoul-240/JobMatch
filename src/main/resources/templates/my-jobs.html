@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>My Jobs - JobMatch</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        .btn {
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+        }
+        .btn:hover {
+            background: #0056b3;
+        }
+        .btn-success {
+            background: #28a745;
+        }
+        .btn-success:hover {
+            background: #218838;
+        }
+        .success-message {
+            padding: 15px;
+            background: #d4edda;
+            color: #155724;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .job-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background: #f9f9f9;
+        }
+        .job-card h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        .job-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .job-detail-item {
+            font-size: 14px;
+        }
+        .job-detail-label {
+            font-weight: bold;
+            color: #555;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <h2>My Posted Jobs</h2>
+    <div>
+        <a href="/jobs/post" class="btn btn-success">+ Post New Job</a>
+        <a href="/dashboard" class="btn">Back to Dashboard</a>
+    </div>
+</div>
+
+<div th:if="${param.posted}" class="success-message">
+    ✓ Job posted successfully!
+</div>
+
+<div th:if="${jobs.empty}" class="empty-state">
+    <h3>No jobs posted yet</h3>
+    <p>Start by posting your first job!</p>
+    <a href="/jobs/post" class="btn btn-success">Post a Job</a>
+</div>
+
+<div th:each="job : ${jobs}" class="job-card">
+    <h3 th:text="${job.title}">Job Title</h3>
+    <p th:text="${job.description}">Job description...</p>
+
+    <div class="job-details">
+        <div class="job-detail-item">
+            <span class="job-detail-label">Skills:</span>
+            <span th:text="${job.skills}">Skills</span>
+        </div>
+        <div class="job-detail-item">
+            <span class="job-detail-label">Pay:</span>
+            <span>₹<span th:text="${job.pay}">0</span></span>
+        </div>
+        <div class="job-detail-item">
+            <span class="job-detail-label">Duration:</span>
+            <span th:text="${job.durationHours} + ' hours'">0 hours</span>
+        </div>
+        <div class="job-detail-item">
+            <span class="job-detail-label">Location:</span>
+            <span th:text="${job.address}">Address</span>
+        </div>
+        <div class="job-detail-item">
+            <span class="job-detail-label">Posted:</span>
+            <span th:text="${#temporals.format(job.createdAt, 'dd MMM yyyy')}">Date</span>
+        </div>
+        <div class="job-detail-item">
+            <span class="job-detail-label">Status:</span>
+            <span th:text="${job.active ? 'Active' : 'Closed'}">Active</span>
+        </div>
+    </div>
+</div>
+</body>
+</html>

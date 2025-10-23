@@ -44,6 +44,8 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/register", "/login", "/", "/css/**").permitAll()
+                        .requestMatchers("/jobs/post", "/jobs/my-jobs").hasRole("COMPANY")
+                        .requestMatchers("/jobs/browse").hasRole("STUDENT")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
