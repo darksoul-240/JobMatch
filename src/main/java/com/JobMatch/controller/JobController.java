@@ -80,4 +80,27 @@ public class JobController {
 
         return "browse-jobs";
     }
+
+    // Show "Jobs Near Me" form
+    @GetMapping("/jobs/nearby")
+    public String showNearbyJobsForm() {
+        return "jobs-nearby-form";
+    }
+
+    // Search for nearby jobs
+    @GetMapping("/jobs/nearby/search")
+    public String searchNearbyJobs(
+            @RequestParam Double latitude,
+            @RequestParam Double longitude,
+            @RequestParam(defaultValue = "5.0") Double radiusKm,
+            Model model
+    ) {
+        List<Job> jobs = jobService.findJobsNearLocation(latitude, longitude, radiusKm);
+        model.addAttribute("jobs", jobs);
+        model.addAttribute("latitude", latitude);
+        model.addAttribute("longitude", longitude);
+        model.addAttribute("radius", radiusKm);
+
+        return "jobs-nearby-results";
+    }
 }

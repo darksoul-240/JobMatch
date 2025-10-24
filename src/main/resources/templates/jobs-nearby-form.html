@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Jobs Near Me - JobMatch</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        h2 {
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .help-text {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+        .info-box {
+            background: #e7f3ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border-left: 4px solid #007bff;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #007bff;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .example {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+<a href="/dashboard" class="back-link">← Back to Dashboard</a>
+
+<h2>🗺️ Find Jobs Near You</h2>
+
+<div class="info-box">
+    <strong>How it works:</strong>
+    <p>Enter your location coordinates and choose how far you're willing to travel. We'll show you all available jobs within that radius, sorted by distance!</p>
+</div>
+
+<form method="get" action="/jobs/nearby/search">
+    <div class="form-group">
+        <label for="latitude">Your Latitude *</label>
+        <input type="number"
+               id="latitude"
+               name="latitude"
+               step="0.000001"
+               placeholder="e.g., 19.0760"
+               required>
+        <div class="help-text">How to find: Right-click on Google Maps → Click coordinates to copy</div>
+    </div>
+
+    <div class="form-group">
+        <label for="longitude">Your Longitude *</label>
+        <input type="number"
+               id="longitude"
+               name="longitude"
+               step="0.000001"
+               placeholder="e.g., 72.8777"
+               required>
+    </div>
+
+    <div class="form-group">
+        <label for="radiusKm">Search Radius *</label>
+        <select id="radiusKm" name="radiusKm">
+            <option value="2">Within 2 km</option>
+            <option value="5" selected>Within 5 km</option>
+            <option value="10">Within 10 km</option>
+            <option value="20">Within 20 km</option>
+            <option value="50">Within 50 km</option>
+        </select>
+    </div>
+
+    <button type="submit">🔍 Search Nearby Jobs</button>
+
+    <div class="example">
+        <strong>Example locations in Mumbai:</strong><br>
+        Bandra: Lat 19.0596, Long 72.8295<br>
+        Andheri: Lat 19.1136, Long 72.8697<br>
+        Colaba: Lat 18.9067, Long 72.8147
+    </div>
+</form>
+</body>
+</html>
