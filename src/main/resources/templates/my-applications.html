@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>My Applications - JobMatch</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        .btn {
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .btn:hover {
+            background: #0056b3;
+        }
+        .success-message {
+            padding: 15px;
+            background: #d4edda;
+            color: #155724;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .application-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        .status-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .status-pending {
+            background: #ffc107;
+            color: #000;
+        }
+        .status-accepted {
+            background: #28a745;
+            color: white;
+        }
+        .status-rejected {
+            background: #dc3545;
+            color: white;
+        }
+        .application-card h3 {
+            margin-top: 0;
+            padding-right: 120px;
+        }
+        .company-name {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .application-details {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+        .detail-row {
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        .detail-label {
+            font-weight: bold;
+            color: #555;
+        }
+        .my-message {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+            font-style: italic;
+            color: #666;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <h2>📝 My Applications</h2>
+    <a href="/dashboard" class="btn">Back to Dashboard</a>
+</div>
+
+<div th:if="${param.applied}" class="success-message">
+    ✓ Application submitted successfully!
+</div>
+
+<div th:if="${applications.empty}" class="empty-state">
+    <h3>No applications yet</h3>
+    <p>Start browsing jobs and apply to opportunities that interest you!</p>
+    <a href="/jobs/browse" class="btn">Browse Jobs</a>
+</div>
+
+<div th:each="app : ${applications}" class="application-card">
+    <div class="status-badge"
+         th:classappend="${app.status == 'PENDING' ? 'status-pending' : (app.status == 'ACCEPTED' ? 'status-accepted' : 'status-rejected')}"
+         th:text="${app.status}">
+        PENDING
+    </div>
+
+    <h3 th:text="${app.job.title}">Job Title</h3>
+    <div class="company-name">
+        Company: <strong th:text="${app.job.company.name}">Company Name</strong>
+    </div>
+
+    <div class="application-details">
+        <div class="detail-row">
+            <span class="detail-label">Applied on:</span>
+            <span th:text="${#temporals.format(app.appliedAt, 'dd MMM yyyy HH:mm')}">Date</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Job Pay:</span>
+            ₹<span th:text="${app.job.pay}">0</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Location:</span>
+            <span th:text="${app.job.address}">Address</span>
+        </div>
+
+        <div th:if="${app.message}" class="my-message">
+            <strong>Your message:</strong><br>
+            <span th:text="${app.message}">Message text</span>
+        </div>
+    </div>
+</div>
+
+<div th:if="${!applications.empty}" style="text-align: center; margin-top: 30px; color: #666;">
+    Total applications: <strong th:text="${applications.size()}">0</strong>
+</div>
+</body>
+</html>

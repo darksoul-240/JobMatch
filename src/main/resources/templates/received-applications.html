@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Received Applications - JobMatch</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        .btn {
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .btn:hover {
+            background: #0056b3;
+        }
+        .success-message {
+            padding: 15px;
+            background: #d4edda;
+            color: #155724;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .application-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .job-title {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        .student-name {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .application-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 15px 0;
+        }
+        .info-item {
+            font-size: 14px;
+        }
+        .info-label {
+            font-weight: bold;
+            color: #555;
+        }
+        .student-message {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 15px 0;
+            border-left: 4px solid #007bff;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .status-pending {
+            background: #ffc107;
+            color: #000;
+        }
+        .status-accepted {
+            background: #28a745;
+            color: white;
+        }
+        .status-rejected {
+            background: #dc3545;
+            color: white;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .action-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .btn-accept {
+            background: #28a745;
+            color: white;
+        }
+        .btn-accept:hover {
+            background: #218838;
+        }
+        .btn-reject {
+            background: #dc3545;
+            color: white;
+        }
+        .btn-reject:hover {
+            background: #c82333;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <h2>📬 Received Applications</h2>
+    <a href="/dashboard" class="btn">Back to Dashboard</a>
+</div>
+
+<div th:if="${param.updated}" class="success-message">
+    ✓ Application status updated successfully!
+</div>
+
+<div th:if="${applications.empty}" class="empty-state">
+    <h3>No applications yet</h3>
+    <p>When students apply to your jobs, you'll see them here!</p>
+    <a href="/jobs/my-jobs" class="btn">View My Jobs</a>
+</div>
+
+<div th:each="app : ${applications}" class="application-card">
+    <div class="job-title">
+        Application for: <strong th:text="${app.job.title}">Job Title</strong>
+    </div>
+
+    <div class="student-name" th:text="${app.student.name}">Student Name</div>
+
+    <div>
+        Status:
+        <span class="status-badge"
+              th:classappend="${app.status == 'PENDING' ? 'status-pending' : (app.status == 'ACCEPTED' ? 'status-accepted' : 'status-rejected')}"
+              th:text="${app.status}">
+                PENDING
+            </span>
+    </div>
+
+    <div class="application-info">
+        <div class="info-item">
+            <span class="info-label">Applied on:</span>
+            <span th:text="${#temporals.format(app.appliedAt, 'dd MMM yyyy HH:mm')}">Date</span>
+        </div>
+        <div class="info-item">
+            <span class="info-label">Student Email:</span>
+            <span th:text="${app.student.email}">Email</span>
+        </div>
+    </div>
+
+    <div th:if="${app.message}" class="student-message">
+        <strong>Message from student:</strong><br>
+        <span th:text="${app.message}">Message</span>
+    </div>
+
+    <div th:if="${app.status == 'PENDING'}" class="action-buttons">
+        <form method="post" th:action="@{/applications/update-status}" style="display: inline;">
+            <input type="hidden" name="applicationId" th:value="${app.id}">
+            <input type="hidden" name="status" value="ACCEPTED">
+            <button type="submit" class="action-btn btn-accept">✅ Accept</button>
+        </form>
+
+        <form method="post" th:action="@{/applications/update-status}" style="display: inline;">
+            <input type="hidden" name="applicationId" th:value="${app.id}">
+            <input type="hidden" name="status" value="REJECTED">
+            <button type="submit" class="action-btn btn-reject">❌ Reject</button>
+        </form>
+    </div>
+
+    <div th:if="${app.status != 'PENDING'}" style="margin-top: 15px; color: #666; font-size: 14px;">
+        <em>This application has been <span th:text="${app.status.toLowerCase()}">processed</span></em>
+    </div>
+</div>
+
+<div th:if="${!applications.empty}" style="text-align: center; margin-top: 30px; color: #666;">
+    Total applications: <strong th:text="${applications.size()}">0</strong>
+</div>
+</body>
+</html>

@@ -33,7 +33,7 @@ public class Job {
     @Column(nullable = false)
     private String address; // Human-readable address
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "company_id", nullable = false)
     private User company; // Which company posted this job
 

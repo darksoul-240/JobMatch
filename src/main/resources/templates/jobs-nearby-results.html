@@ -99,6 +99,34 @@
         .empty-state h3 {
             margin-top: 0;
         }
+        .apply-form {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        .apply-form textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            font-family: Arial;
+            resize: vertical;
+            min-height: 60px;
+            box-sizing: border-box;
+        }
+        .apply-form button {
+            padding: 10px 20px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .apply-form button:hover {
+            background: #218838;
+        }
     </style>
 </head>
 <body>
@@ -152,6 +180,15 @@
             <strong>📅 Posted:</strong>
             <span th:text="${#temporals.format(job.createdAt, 'dd MMM yyyy')}">Date</span>
         </div>
+    </div>
+
+    <div class="apply-form">
+        <form method="post" th:action="@{/applications/apply}">
+            <input type="hidden" name="jobId" th:value="${job.id}">
+            <textarea name="message"
+                      placeholder="Optional: Tell the company why you're a good fit..."></textarea>
+            <button type="submit">✅ Apply for this Job</button>
+        </form>
     </div>
 </div>
 
